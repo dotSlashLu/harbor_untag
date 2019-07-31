@@ -4,6 +4,7 @@ import api
 KEEP = 5
 DELETED_TIME = "0001-01-01T00:00:00Z"
 
+
 def exp_proj(proj):
     repos = api.repos(proj["project_id"])
     expired = [
@@ -17,8 +18,7 @@ def exp_proj(proj):
                 ),
                 key=lambda i: i["created"],
                 reverse=True
-            )[KEEP:]
-        )
+            )[KEEP:])
         for repo in repos
         if repo["tags_count"] > KEEP
     ]

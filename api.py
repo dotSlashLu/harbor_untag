@@ -7,6 +7,7 @@ BASE = DOMAIN+"/api"
 
 sid = ""
 
+
 def login():
     global sid
     data = {"principal": USER, "password": PASSWD}
@@ -15,16 +16,19 @@ def login():
     if sid == "":
         raise Exception("Failed to login")
 
+
 def get(endpoint, p=None):
     url = BASE + endpoint
     r = requests.get(url, params=p)
     if r.status_code >= 300:
         raise Exception("can't {} {}: {} {}".format(method, r.url,
-            r.status_code, r.text))
+                        r.status_code, r.text))
     return r.json()
+
 
 def projs():
     return get("/projects")
+
 
 def repos(proj_id):
     params = {
@@ -34,9 +38,11 @@ def repos(proj_id):
     }
     return get("/repositories", params)
 
+
 def tag(repo):
     endpoint = "/repositories/{}/tags".format(repo["name"])
     return get(endpoint, {"detail": 1})
+
 
 def delete(repo_name, tag):
     endpoint = "/repositories/{}/tags/{}".format(repo_name, tag)
@@ -44,4 +50,3 @@ def delete(repo_name, tag):
     if r.status_code >= 300:
         raise Exception("failed to delete {}:{}", repo_name, tag)
     print("deleted {}:{}".format(repo_name, tag))
-
